@@ -17,6 +17,8 @@
 /// *WRAP Void*
 #define WRAPV0(F) void recurses::screen::F() { NV(F()); }
 #define WRAPV1(F, T, x) void recurses::screen::F(T x) { NV(F(x)); }
+#define WRAPV2(F, T, x, U, y) \
+    void recurses::screen::F(T x, U y) { NV(F(x, y)); }
 
 /// *WRAP*
 #define WRAP0(F, R) R recurses::screen::F() { N(F()); }
@@ -33,6 +35,7 @@ void recurses::screen::nap(std::chrono::milliseconds ms) {
     NV(napms(ms.count()))
 }
 
-WRAPV0(refresh)
-WRAPV1(addstr, char const*, s)
-WRAP0(getch, int)
+WRAPV1( addstr, char const*, s)
+WRAP0(  getch,  int)
+WRAPV2( move,   int, y, int, x)
+WRAPV0( refresh)

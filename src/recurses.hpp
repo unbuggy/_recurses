@@ -24,6 +24,7 @@ namespace recurses {
         void addch(chtype);
         void addstr(char const*);
         int getch();
+        void move(int y, int x);
         void nap(std::chrono::milliseconds);
         // void napms(int); use `nap` instead; e.g., `scr.nap(100ms)`
         void refresh();
