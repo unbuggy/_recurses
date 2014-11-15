@@ -805,10 +805,11 @@ int main(int argc, char** argv) try
         "PREFIX = $(shell git rev-parse --show-toplevel)\n"
         "SRCDIR = $(PREFIX)/src\n"
         "OBJDIR = $(PREFIX)/var/obj\n"
+        "CURSES = $(HOME)/opt/ncurses-5.9\n"
         "CXX = clang++\n"
-        "CPPFLAGS = -I$(SRCDIR)\n"
+        "CPPFLAGS = -I$(SRCDIR) -isystem $(CURSES)/include\n"
         "CXXFLAGS = -std=c++1y -pedantic -Wall -stdlib=libc++\n"
-        "LDFLAGS = -lc++\n"
+        "LDFLAGS = -L$(CURSES)/lib -lc++ -lncursesw\n"
         "MKDIR = mkdir -p\n"
         "RMDIR = rm -rf\n",
 
