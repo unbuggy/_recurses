@@ -4,14 +4,19 @@
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 
-int main() try {
-    recurses::screen scr;
+struct application: recurses::screen { void main(); };
+
+void application::main() {
     for (char c : "Greetings from NCurses!"s) {
-        scr.addch(c);
-        scr.refresh();
-        scr.nap(100ms);
+        addch(c);
+        refresh();
+        nap(100ms);
     }
-    scr.getch();
+    getch();
+}
+
+int main() try {
+    application().main();
 } catch (std::exception const& x) {
     std::cerr << "error: " << x.what() << '\n';
     return -1;
