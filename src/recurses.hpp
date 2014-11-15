@@ -1,7 +1,8 @@
 #ifndef INCLUDED_RECURSES
 #define INCLUDED_RECURSES
 
-#include <cstdint>
+#include <chrono>       // milliseconds
+#include <cstdint>      // uint32_t
 #include <stdexcept>    // runtime_error
 
 namespace recurses {
@@ -20,10 +21,12 @@ namespace recurses {
         screen();
         ~screen();
 
-        void addch(chtype c);
-        void addstr(char const* s);
-        void refresh();
+        void addch(chtype);
+        void addstr(char const*);
         int getch();
+        void nap(std::chrono::milliseconds);
+        // void napms(int); use `nap` instead; e.g., `scr.nap(100ms)`
+        void refresh();
     };
 
     struct window: screen {

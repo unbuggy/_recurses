@@ -29,6 +29,10 @@ recurses::screen::~screen() { if (--screen_depth == 0) endwin();  }
 
 void recurses::screen::addch(chtype c) { NV(addch(c._value)); }
 
+void recurses::screen::nap(std::chrono::milliseconds ms) {
+    NV(napms(ms.count()))
+}
+
 WRAPV0(refresh)
 WRAPV1(addstr, char const*, s)
 WRAP0(getch, int)
