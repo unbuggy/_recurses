@@ -27,6 +27,8 @@ static int screen_depth;
 recurses::screen::screen()  { if (++screen_depth == 1) initscr(); }
 recurses::screen::~screen() { if (--screen_depth == 0) endwin();  }
 
+void recurses::screen::addch(chtype c) { NV(addch(c._value)); }
+
 WRAPV0(refresh)
 WRAPV1(addstr, char const*, s)
 WRAP0(getch, int)
