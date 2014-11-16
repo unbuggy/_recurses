@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# NAME
+#   mklistings - boilerplate generator to wrap code listings
+#
+# SYNOPSYS
+#   mklistings
+#
+# DESCRIPTION
+#   This script generates corpus (`.cpp`) files for all `listing?-*.hpp` header
+#   files in the `src` directory of the current project, except those for which
+#   a corresponding corpus has been supplied manually. Each generated corpus
+#   defines a subclass of `recurses::screen`, including the corresponding
+#   header file in a method definition within the subclass, such that all
+#   public `recurses::screen` members are in scope.  This is a weird but
+#   effective way to separate boilerplate from listing-specific code.
+
+set -e  # Exit immediately on error.
+
+top=`git rev-parse --show-toplevel`
+cd "$top/src"
+for h in listing?-*.hpp; do
+    c="`<<<"$h" sed 's/\..*/.cpp/'`"
+    if [ ! -e "$c" ]; then
+        #g="`<<<"$h" sed 's/\..*/-generated.cpp/'`"
+        g="generated/$c"
+        if [ "$h" -nt "$g" ]; then
+            mkdir -p "`dirname "$g"`"
+            cat >"$g" <<EOF
+#include "recurses.hpp"
+#include "std.hpp"
+
+using namespace std::chrono_literals;
+using namespace std::string_literals;
+
+struct application: recurses::screen { void main(); };
+
+void application::main() {
+#include "$h"
+}
+
+int main() try {
+    application().main();
+} catch (std::exception const& x) {
+    std::cerr << "error: " << x.what() << '\n';
+    return -1;
+}
+EOF
+        fi
+    fi
+done

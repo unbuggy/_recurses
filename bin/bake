@@ -10,15 +10,18 @@
 #   This script generates a make(1) file for the `src` directory.  The real
 #   work is done by the find(1) utility -- which locates source files -- and
 #   by the `mkmk` program that analyzes intra-project dependencies and prints
-#   corresponding build rules.
+#   corresponding build rules.  Additionally, this script calls the `mklisting`
+#   utility to generate a small amount of boilerplate C++ code.
 #
 # SEE ALSO
 #   * doc/cpp-init.md for step-by-step usage instructions
 #   * etc/mkmk.cpp for build configuration settings
+#   * etc/mklisting for the boilerplate code generator
 
 set -e  # Exit immediately on error.
 
 cd `git rev-parse --show-toplevel`
+bash etc/mklisting
 make -s -f etc/mkmk.mk
 cd src
 ../var/libexec/mkmk `find . -name '*.?pp'` > Makefile

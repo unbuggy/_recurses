@@ -4,6 +4,8 @@
 #include <ncursesw/ncurses.h>
     // Includes stdio.h, unctrl.h, stdarg.h, and stddef.h.
 
+#include <csignal>
+
 /// *Ncurses Void* - Call the NCurses version, and throw if it fails.
 #define NV(X) if (ERR == ::X) throw error(#X);
 
@@ -35,8 +37,22 @@ void recurses::screen::nap(std::chrono::milliseconds ms) {
     NV(napms(ms.count()))
 }
 
-WRAPV1( addstr, char const*, s)
+void recurses::screen::printw(char const* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    ::vwprintw(stdscr, fmt, args);
+    va_end(args);
+}
+
+void recurses::screen::getstr(char* s) {
+    auto r = ::getstr(s);
+    if (ERR         == r) throw error("getstr(s)");
+    if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+}
+
+WRAPV1( addstr, char const*, s )
 WRAPV0( clear )
-WRAP0(  getch,  int)
-WRAPV2( move,   int, y, int, x)
-WRAPV0( refresh)
+WRAP0(  getch,  int )
+WRAPV2( move,   int, y, int, x )
+WRAPV1( napms,  int, ms )
+WRAPV0( refresh )

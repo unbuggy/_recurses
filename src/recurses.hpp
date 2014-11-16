@@ -11,6 +11,12 @@ namespace recurses {
         error(char const* what): std::runtime_error(what) { }
     };
 
+    // Indicates receipt of a POSIX signal.
+    struct signal: error {
+        int value;
+        signal(char const* s, int i): error(s), value(i) { }
+    };
+
     struct chtype {
         std::uint32_t _value;
 
@@ -25,10 +31,15 @@ namespace recurses {
         void addstr(char const*);
         void clear();
         int getch();
+        void getstr(char* s);    // throws on SIGWINCH
         void move(int y, int x);
-        void nap(std::chrono::milliseconds);
-        // void napms(int); use `nap` instead; e.g., `scr.nap(100ms)`
+        void printw(char const* fmt, ...);
+        void napms(int);
         void refresh();
+
+
+        // Additions relative to NCurses.
+        void nap(std::chrono::milliseconds);
     };
 
     struct window: screen {
