@@ -31,12 +31,14 @@ namespace recurses {
         void addstr(char const*);
         void clear();
         int getch();
-        void getstr(char* s);    // throws on SIGWINCH
         void move(int y, int x);
         void printw(char const* fmt, ...);
         void napms(int);
         void refresh();
 
+        // The `*get*str` methods throw `signal` on SIGWINCH.
+        void getnstr(char* s, int n);
+        void getstr(char* s);
 
         // Additions relative to NCurses.
         void nap(std::chrono::milliseconds);

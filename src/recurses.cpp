@@ -44,6 +44,12 @@ void recurses::screen::printw(char const* fmt, ...) {
     va_end(args);
 }
 
+void recurses::screen::getnstr(char* s, int n) {
+    auto r = ::getnstr(s, n);
+    if (ERR         == r) throw error("getstr(s, n)");
+    if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+}
+
 void recurses::screen::getstr(char* s) {
     auto r = ::getstr(s);
     if (ERR         == r) throw error("getstr(s)");
