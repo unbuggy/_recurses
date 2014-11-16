@@ -36,6 +36,7 @@ void recurses::screen::nap(std::chrono::milliseconds ms) {
 }
 
 WRAPV1( addstr, char const*, s)
+WRAPV0( clear )
 WRAP0(  getch,  int)
 WRAPV2( move,   int, y, int, x)
 WRAPV0( refresh)

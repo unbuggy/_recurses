@@ -23,6 +23,7 @@ namespace recurses {
 
         void addch(chtype);
         void addstr(char const*);
+        void clear();
         int getch();
         void move(int y, int x);
         void nap(std::chrono::milliseconds);
