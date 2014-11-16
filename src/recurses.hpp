@@ -23,12 +23,21 @@ namespace recurses {
         chtype(char c): _value(c) { }
     };
 
+    enum attr {
+        blink   = 1 << 0,
+        bold    = 1 << 1,
+        normal  = 1 << 2,
+    };
+
     struct screen {
         screen();
         ~screen();
 
         void addch(chtype);
         void addstr(char const*);
+        void attroff(attr);
+        void attron(attr);
+        void attrset(attr);
         void clear();
         int getch();
         void move(int y, int x);
