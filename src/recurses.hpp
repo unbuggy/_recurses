@@ -35,6 +35,7 @@ namespace recurses {
         void printw(char const* fmt, ...);
         void napms(int);
         void refresh();
+        int scanw(char* fmt, ...);
 
         // The `*get*str` methods throw `signal` on SIGWINCH.
         void getnstr(char* s, int n);
@@ -42,6 +43,7 @@ namespace recurses {
 
         // Additions relative to NCurses.
         void nap(std::chrono::milliseconds);
+        int scanw(char const* fmt, ...);
     };
 
     struct window: screen {

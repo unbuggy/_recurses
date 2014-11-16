@@ -5,6 +5,8 @@
     // Includes stdio.h, unctrl.h, stdarg.h, and stddef.h.
 
 #include <csignal>
+#include <string>
+#include <vector>
 
 /// *Ncurses Void* - Call the NCurses version, and throw if it fails.
 #define NV(X) if (ERR == ::X) throw error(#X);
@@ -33,6 +35,18 @@ recurses::screen::~screen() { if (--screen_depth == 0) endwin();  }
 
 void recurses::screen::addch(chtype c) { NV(addch(c._value)); }
 
+void recurses::screen::getnstr(char* s, int n) {
+    auto r = ::getnstr(s, n);
+    if (ERR         == r) throw error("getstr(s, n)");
+    if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+}
+
+void recurses::screen::getstr(char* s) {
+    auto r = ::getstr(s);
+    if (ERR         == r) throw error("getstr(s)");
+    if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+}
+
 void recurses::screen::nap(std::chrono::milliseconds ms) {
     NV(napms(ms.count()))
 }
@@ -44,16 +58,21 @@ void recurses::screen::printw(char const* fmt, ...) {
     va_end(args);
 }
 
-void recurses::screen::getnstr(char* s, int n) {
-    auto r = ::getnstr(s, n);
-    if (ERR         == r) throw error("getstr(s, n)");
-    if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+int recurses::screen::scanw(char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    int r = ::vwscanw(stdscr, fmt, args);
+    va_end(args);
+    return r;
 }
 
-void recurses::screen::getstr(char* s) {
-    auto r = ::getstr(s);
-    if (ERR         == r) throw error("getstr(s)");
-    if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+int recurses::screen::scanw(char const* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    std::vector<char> s(fmt, fmt + strlen(fmt));
+    int r = ::vwscanw(stdscr, s.data(), args);
+    va_end(args);
+    return r;
 }
 
 WRAPV1( addstr, char const*, s )
