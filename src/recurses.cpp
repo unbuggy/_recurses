@@ -31,9 +31,10 @@
 namespace recurses {
     static attr_t convert(attr a) {
         attr_t r = 0;
-        if (a & bold)   r |= A_BOLD;
-        if (a & blink)  r |= A_BLINK;
-        if (a & normal) r |= A_NORMAL;
+        if (a & bold)       r |= A_BOLD;
+        if (a & blink)      r |= A_BLINK;
+        if (a & normal)     r |= A_NORMAL;
+        if (a & underline)  r |= A_UNDERLINE;
         return r;
     }
 }

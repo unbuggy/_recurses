@@ -24,10 +24,15 @@ namespace recurses {
     };
 
     enum attr {
-        blink   = 1 << 0,
-        bold    = 1 << 1,
-        normal  = 1 << 2,
+        blink     = 1 << 0,
+        bold      = 1 << 1,
+        normal    = 1 << 2,
+        underline = 1 << 3,
     };
+
+    inline attr operator|(attr a, attr b) {
+        return attr(unsigned(a) | unsigned(b));
+    }
 
     struct screen {
         screen();
