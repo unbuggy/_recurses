@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include <stdlib.h>
+
 // Macros {{{
 
 /// *Ncurses Void* - Call the NCurses version, and throw if it fails.
@@ -45,8 +47,17 @@ static attr_t convert(recurses::attr a) {
 
 static int screen_depth;
 
-recurses::screen::screen()  { if (++screen_depth == 1) initscr(); }
-recurses::screen::~screen() { if (--screen_depth == 0) endwin();  }
+// TERM settings other than "screen" confuse ncurses inside tmux.
+recurses::screen::screen()  {
+    if (++screen_depth == 1) {
+        if (getenv("TMUX")) setenv("TERM", "screen", 1);
+        initscr();
+    }
+}
+
+recurses::screen::~screen() {
+    if (--screen_depth == 0) endwin();
+}
 
 void recurses::screen::addch(chtype c) { NV(addch(c._value));       }
 void recurses::screen::attroff(attr a) { NV(attroff(convert(a)));   }
