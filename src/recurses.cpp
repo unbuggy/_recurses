@@ -109,8 +109,10 @@ int recurses::screen::scanw(char const* fmt, ...) {
     return r;
 }
 
+bool recurses::screen::beep()  { return OK == ::beep();  }
+bool recurses::screen::flash() { return OK == ::flash(); }
+
 WRAPV1( addstr, char const*, s )
-WRAPV0( clear )
 WRAP0(  getch,  int )
 WRAPV2( move,   int, y, int, x )
 WRAPV1( napms,  int, ms )

@@ -53,6 +53,10 @@ namespace recurses {
         void refresh();
         int scanw(char* fmt, ...);
 
+        // True if the terminal reports success, false otherwise.
+        bool beep();
+        bool flash();
+
         // The `*get*str` methods throw `signal` on SIGWINCH.
         void getnstr(char* s, int n);
         void getstr(char* s);
