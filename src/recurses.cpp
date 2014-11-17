@@ -59,10 +59,11 @@ recurses::screen::~screen() {
     if (--screen_depth == 0) endwin();
 }
 
-void recurses::screen::addch(chtype c) { NV(addch(c._value));       }
-void recurses::screen::attroff(attr a) { NV(attroff(convert(a)));   }
-void recurses::screen::attron(attr a)  { NV(attron(convert(a)));    }
-void recurses::screen::attrset(attr a) { NV(attrset(convert(a)));    }
+void recurses::screen::addch(   chtype c) { NV(addch(c._value));       }
+void recurses::screen::attroff( attr   a) { NV(attroff(convert(a)));   }
+void recurses::screen::attron(  attr   a) { NV(attron(convert(a)));    }
+void recurses::screen::attrset( attr   a) { NV(attrset(convert(a)));   }
+void recurses::screen::bkgd(    chtype c) { NV(bkgd(c._value));        }
 
 void recurses::screen::getnstr(char* s, int n) {
     auto r = ::getnstr(s, n);
@@ -119,6 +120,13 @@ WRAPV0( refresh )
 
 // class color_screen {{{
 
+recurses::chtype recurses::operator|(
+        recurses::color_pair    cp,
+        recurses::chtype        ch) {
+    ch._value |= COLOR_PAIR(cp._n);
+    return ch;
+}
+
 static int color_screen_depth;
 static int color_screen_colors;
 static int color_screen_color_pairs;
@@ -144,6 +152,10 @@ recurses::color_screen::color_screen():
 
 void recurses::color_screen::attrset(color_pair c) {
     NV(attrset(COLOR_PAIR(c._n)))
+}
+
+void recurses::color_screen::bkgd(color_pair c) {
+    NV(bkgd(COLOR_PAIR(c._n)))
 }
 
 recurses::color_pair recurses::color_screen::init_pair(color f, color b) {

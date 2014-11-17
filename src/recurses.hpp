@@ -43,6 +43,7 @@ namespace recurses {
         void attroff(attr);
         void attron(attr);
         void attrset(attr);
+        void bkgd(chtype);
         void clear();
         int getch();
         bool has_colors() const;
@@ -72,12 +73,16 @@ namespace recurses {
 
     struct color_pair { int _n; };
 
+    chtype operator|(color_pair, chtype);
+
     struct color_screen: screen, detail::color_screen_pre {
         using screen::attrset;
+        using screen::bkgd;
         int const colors;
         int const color_pairs;
         color_screen();
         void attrset(color_pair);
+        void bkgd(color_pair);
         color_pair init_pair(color f, color b);
     };
 
