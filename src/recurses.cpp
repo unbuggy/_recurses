@@ -136,9 +136,22 @@ recurses::detail::color_screen_pre::~color_screen_pre() {
     --color_screen_depth;
 }
 
+static int color_screen_next_pair = 1;
+
 recurses::color_screen::color_screen():
     colors(color_screen_colors),
     color_pairs(color_screen_color_pairs) { }
+
+void recurses::color_screen::attrset(color_pair c) {
+    NV(attrset(COLOR_PAIR(c._n)))
+}
+
+recurses::color_pair recurses::color_screen::init_pair(color f, color b) {
+    if (color_screen_next_pair >= color_pairs)
+        throw error("too many color pairs");
+    NV(init_pair(color_screen_next_pair, int(f), int(b)))
+    return {color_screen_next_pair++};
+}
 
 // }}}
 

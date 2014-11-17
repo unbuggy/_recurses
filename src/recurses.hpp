@@ -68,10 +68,17 @@ namespace recurses {
         };
     }
 
+    enum color { black, red, green, brown, blue, magenta, cyan, white };
+
+    struct color_pair { int _n; };
+
     struct color_screen: screen, detail::color_screen_pre {
+        using screen::attrset;
         int const colors;
         int const color_pairs;
         color_screen();
+        void attrset(color_pair);
+        color_pair init_pair(color f, color b);
     };
 
 }

@@ -1,0 +1,15 @@
+auto pair1 = init_pair(black, red);
+auto pair2 = init_pair(blue, black);
+attrset(pair1);
+addstr("My name is Mr. Black!\n");
+attrset(pair2);
+addstr("My name is Mr. Blue!\n");
+attrset(pair1);
+addstr("How do you do?\n");
+attrset(pair2);
+addstr("How do I do ");
+attron(bold);
+addstr("what");
+attroff(bold);
+addch('?');
+getch();
