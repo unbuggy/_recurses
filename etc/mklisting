@@ -34,7 +34,7 @@ using namespace recurses;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 
-struct application: recurses::screen { void main(); };
+struct application: recurses::color_screen { void main(); };
 
 void application::main() {
 #include "$h"

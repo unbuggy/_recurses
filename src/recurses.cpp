@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+// Macros {{{
+
 /// *Ncurses Void* - Call the NCurses version, and throw if it fails.
 #define NV(X) if (ERR == ::X) throw error(#X);
 
@@ -28,15 +30,17 @@
 #define WRAP0(F, R) R recurses::screen::F() { N(F()); }
 #define WRAP1(F, T, X, R) R recurses::screen::F(T X) { N(F(X)); }
 
-namespace recurses {
-    static attr_t convert(attr a) {
-        attr_t r = 0;
-        if (a & bold)       r |= A_BOLD;
-        if (a & blink)      r |= A_BLINK;
-        if (a & normal)     r |= A_NORMAL;
-        if (a & underline)  r |= A_UNDERLINE;
-        return r;
-    }
+// }}}
+
+// class screen {{{
+
+static attr_t convert(recurses::attr a) {
+    attr_t r = 0;
+    if (a & recurses::bold)       r |= A_BOLD;
+    if (a & recurses::blink)      r |= A_BLINK;
+    if (a & recurses::normal)     r |= A_NORMAL;
+    if (a & recurses::underline)  r |= A_UNDERLINE;
+    return r;
 }
 
 static int screen_depth;
@@ -59,6 +63,10 @@ void recurses::screen::getstr(char* s) {
     auto r = ::getstr(s);
     if (ERR         == r) throw error("getstr(s)");
     if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
+}
+
+bool recurses::screen::has_colors() const {
+    return ::has_colors() == TRUE;
 }
 
 void recurses::screen::nap(std::chrono::milliseconds ms) {
@@ -95,3 +103,32 @@ WRAP0(  getch,  int )
 WRAPV2( move,   int, y, int, x )
 WRAPV1( napms,  int, ms )
 WRAPV0( refresh )
+
+// }}}
+
+// class color_screen {{{
+
+static int color_screen_depth;
+static int color_screen_colors;
+static int color_screen_color_pairs;
+
+recurses::detail::color_screen_pre::color_screen_pre() {
+    if (++color_screen_depth == 1) {
+        if (!has_colors()) throw error("screen does not support colors");
+        NV(start_color())
+        color_screen_colors      = COLORS;
+        color_screen_color_pairs = COLOR_PAIRS;
+    }
+}
+
+recurses::detail::color_screen_pre::~color_screen_pre() {
+    --color_screen_depth;
+}
+
+recurses::color_screen::color_screen():
+    colors(color_screen_colors),
+    color_pairs(color_screen_color_pairs) { }
+
+// }}}
+
+// vi:fdm=marker

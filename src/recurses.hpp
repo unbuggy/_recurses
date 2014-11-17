@@ -45,6 +45,7 @@ namespace recurses {
         void attrset(attr);
         void clear();
         int getch();
+        bool has_colors() const;
         void move(int y, int x);
         void printw(char const* fmt, ...);
         void napms(int);
@@ -60,10 +61,19 @@ namespace recurses {
         int scanw(char const* fmt, ...);
     };
 
-    struct window: screen {
+    namespace detail {
+        struct color_screen_pre {
+            color_screen_pre();
+            ~color_screen_pre();
+        };
+    }
 
-
+    struct color_screen: screen, detail::color_screen_pre {
+        int const colors;
+        int const color_pairs;
+        color_screen();
     };
+
 }
 
 #endif
