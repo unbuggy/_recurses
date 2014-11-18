@@ -32,6 +32,10 @@
 #define WRAP0(F, R) R recurses::screen::F() { N(F()); }
 #define WRAP1(F, T, X, R) R recurses::screen::F(T X) { N(F(X)); }
 
+/// *WRAP Const*
+#define WRAPC0(F, R) R recurses::screen::F() const { N(F()); }
+#define WRAPC1(F, T, X, R) R recurses::screen::F(T X) const { N(F(X)); }
+
 // }}}
 
 // class screen {{{
@@ -112,10 +116,13 @@ int recurses::screen::scanw(char const* fmt, ...) {
 bool recurses::screen::beep()  { return OK == ::beep();  }
 bool recurses::screen::flash() { return OK == ::flash(); }
 
+int recurses::screen::getmaxx() const { return ::getmaxx(stdscr); }
+int recurses::screen::getmaxy() const { return ::getmaxy(stdscr); }
+
 WRAPV1( addstr, char const*, s )
-WRAP0(  getch,  int )
-WRAPV2( move,   int, y, int, x )
-WRAPV1( napms,  int, ms )
+WRAP0(  getch,   int )
+WRAPV2( move,    int, y, int, x )
+WRAPV1( napms,   int, ms )
 WRAPV0( refresh )
 
 // }}}
