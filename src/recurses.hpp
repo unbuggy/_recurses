@@ -52,6 +52,8 @@ namespace recurses {
         bool has_colors() const;
         void insch(chtype);
         void move(int y, int x);
+        void mvaddch(int y, int x, chtype);
+        void mvinsch(int y, int x, chtype);
         void printw(char const* fmt, ...);
         void napms(int);
         void refresh();
