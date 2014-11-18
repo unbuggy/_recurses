@@ -53,7 +53,9 @@ namespace recurses {
         void insch(chtype);
         void move(int y, int x);
         void mvaddch(int y, int x, chtype);
+        void mvaddstr(int y, int x, char const*);
         void mvinsch(int y, int x, chtype);
+        void mvprintw(int y, int x, char const* fmt, ...);
         void printw(char const* fmt, ...);
         void napms(int);
         void refresh();

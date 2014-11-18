@@ -78,15 +78,25 @@ void screen::bkgd(    chtype c) { NV(bkgd(c._value))        }
 void screen::insch(   chtype c) { NV(insch(c._value))       }
 
 void screen::mvaddch(int y, int x, chtype c)   { NV(mvaddch(y, x, c._value)) }
+void screen::mvaddstr(int y, int x, char const* s) { NV(mvaddstr(y, x, s)) }
 void screen::mvinsch(int y, int x, chtype c)   { NV(mvinsch(y, x, c._value)) }
 void screen::nap(std::chrono::milliseconds ms) { NV(napms(ms.count())) }
 
 bool screen::beep()  { return OK == ::beep();  }
 bool screen::flash() { return OK == ::flash(); }
 
-int screen::getmaxx()     const { return ::getmaxx(stdscr); }
-int screen::getmaxy()     const { return ::getmaxy(stdscr); }
+int  screen::getmaxx()    const { return ::getmaxx(stdscr); }
+int  screen::getmaxy()    const { return ::getmaxy(stdscr); }
 bool screen::has_colors() const { return ::has_colors(); }
+
+#define BODY \
+    va_list args; \
+    va_start(args, fmt); \
+    ::vwprintw(stdscr, fmt, args); \
+    va_end(args);
+void screen::mvprintw(int y, int x, char const* fmt, ...) { move(y, x); BODY }
+void screen::printw(char const* fmt, ...) { BODY }
+#undef BODY
 
 void screen::getnstr(char* s, int n) {
     auto r = ::getnstr(s, n);
@@ -98,13 +108,6 @@ void screen::getstr(char* s) {
     auto r = ::getstr(s);
     if (ERR         == r) throw error("getstr(s)");
     if (KEY_RESIZE  == r) throw signal("SIGWINCH", SIGWINCH);
-}
-
-void screen::printw(char const* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    ::vwprintw(stdscr, fmt, args);
-    va_end(args);
 }
 
 int screen::scanw(char* fmt, ...) {
