@@ -46,9 +46,12 @@ namespace recurses {
         void bkgd(chtype);
         void clear();
         int getch();
+        int getcurx() const; // NCurses extension
+        int getcury() const; // NCurses extension
         int getmaxx() const;
         int getmaxy() const;
         void getmaxyx(int& y, int& x) const { y = getmaxy(); x = getmaxx(); }
+        void getyx(int& y, int& x) const { y = getcury(); x = getcurx(); }
         bool has_colors() const;
         void insch(chtype);
         void move(int y, int x);
@@ -66,6 +69,7 @@ namespace recurses {
         bool flash();
 
         // The `*get*str` methods throw `signal` on SIGWINCH.
+        // SIGWINCH detection is an NCurses extension.
         void getnstr(char* s, int n);
         void getstr(char* s);
 

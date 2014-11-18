@@ -85,6 +85,8 @@ void screen::nap(std::chrono::milliseconds ms) { NV(napms(ms.count())) }
 bool screen::beep()  { return OK == ::beep();  }
 bool screen::flash() { return OK == ::flash(); }
 
+int  screen::getcurx()    const { return ::getcurx(stdscr); }
+int  screen::getcury()    const { return ::getcury(stdscr); }
 int  screen::getmaxx()    const { return ::getmaxx(stdscr); }
 int  screen::getmaxy()    const { return ::getmaxy(stdscr); }
 bool screen::has_colors() const { return ::has_colors(); }
