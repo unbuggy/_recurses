@@ -50,6 +50,7 @@ namespace recurses {
         int getmaxy() const;
         void getmaxyx(int& y, int& x) const { y = getmaxy(); x = getmaxx(); }
         bool has_colors() const;
+        void insch(chtype);
         void move(int y, int x);
         void printw(char const* fmt, ...);
         void napms(int);

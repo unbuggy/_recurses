@@ -68,6 +68,7 @@ void recurses::screen::attroff( attr   a) { NV(attroff(convert(a)));   }
 void recurses::screen::attron(  attr   a) { NV(attron(convert(a)));    }
 void recurses::screen::attrset( attr   a) { NV(attrset(convert(a)));   }
 void recurses::screen::bkgd(    chtype c) { NV(bkgd(c._value));        }
+void recurses::screen::insch(   chtype c) { NV(insch(c._value));       }
 
 void recurses::screen::getnstr(char* s, int n) {
     auto r = ::getnstr(s, n);
