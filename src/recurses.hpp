@@ -54,6 +54,7 @@ namespace recurses {
         void getyx(int& y, int& x) const { y = getcury(); x = getcurx(); }
         bool has_colors() const;
         void insch(chtype);
+        void insertln();
         void move(int y, int x);
         void mvaddch(int y, int x, chtype);
         void mvaddstr(int y, int x, char const*);

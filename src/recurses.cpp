@@ -66,6 +66,7 @@ screen::~screen() {
 
 WRAPV1( addstr, char const*, s )
 WRAP0(  getch,  int )
+WRAPV0( insertln )
 WRAPV2( move,   int, y, int, x )
 WRAPV1( napms,  int, ms )
 WRAPV0( refresh )
