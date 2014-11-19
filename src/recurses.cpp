@@ -151,9 +151,7 @@ detail::color_screen_pre::color_screen_pre() {
     }
 }
 
-detail::color_screen_pre::~color_screen_pre() {
-    --color_screen_depth;
-}
+detail::color_screen_pre::~color_screen_pre() { --color_screen_depth; }
 
 static int color_screen_next_pair = 1;
 
@@ -161,13 +159,8 @@ color_screen::color_screen():
     colors(color_screen_colors),
     color_pairs(color_screen_color_pairs) { }
 
-void color_screen::attrset(color_pair c) {
-    NV(attrset(COLOR_PAIR(c._n)))
-}
-
-void color_screen::bkgd(color_pair c) {
-    NV(bkgd(COLOR_PAIR(c._n)))
-}
+void color_screen::attrset( color_pair c) { NV(attrset( COLOR_PAIR(c._n) )) }
+void color_screen::bkgd(    color_pair c) { NV(bkgd(    COLOR_PAIR(c._n) )) }
 
 color_pair color_screen::init_pair(color f, color b) {
     if (color_screen_next_pair >= color_pairs)
