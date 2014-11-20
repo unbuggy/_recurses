@@ -45,6 +45,8 @@ namespace recurses {
         void attrset(attr);
         void bkgd(chtype);
         void clear();
+        void clrtobot();
+        void clrtoeol();
         void delch();
         void deleteln();
         int getch();
@@ -57,6 +59,7 @@ namespace recurses {
         bool has_colors() const;
         void insch(chtype);
         void insertln();
+        void insstr(char const*);
         void move(int y, int x);
         void mvaddch(int y, int x, chtype);
         void mvaddstr(int y, int x, char const*);
