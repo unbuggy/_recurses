@@ -45,6 +45,8 @@ namespace recurses {
         void attrset(attr);
         void bkgd(chtype);
         void clear();
+        void delch();
+        void deleteln();
         int getch();
         int getcurx() const; // NCurses extension
         int getcury() const; // NCurses extension
