@@ -65,6 +65,7 @@ namespace recurses {
         void mvaddstr(int y, int x, char const*);
         void mvinsch(int y, int x, chtype);
         void mvprintw(int y, int x, char const* fmt, ...);
+        void nodelay(bool b =true);
         void printw(char const* fmt, ...);
         void napms(int);
         void refresh();
@@ -80,6 +81,7 @@ namespace recurses {
         void getstr(char* s);
 
         // Additions relative to NCurses.
+        bool getch(int& c); // false if NCurses returns ERR
         void nap(std::chrono::milliseconds);
         int scanw(char const* fmt, ...);
     };

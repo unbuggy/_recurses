@@ -82,6 +82,7 @@ void screen::attron(  attr   a) { NV(attron(convert(a)))    }
 void screen::attrset( attr   a) { NV(attrset(convert(a)))   }
 void screen::bkgd(    chtype c) { NV(bkgd(c._value))        }
 void screen::insch(   chtype c) { NV(insch(c._value))       }
+void screen::nodelay( bool   b) { NV(nodelay(stdscr, b ? TRUE : FALSE)) }
 
 void screen::mvaddch(int y, int x, chtype c)   { NV(mvaddch(y, x, c._value)) }
 void screen::mvaddstr(int y, int x, char const* s) { NV(mvaddstr(y, x, s)) }
@@ -105,6 +106,11 @@ bool screen::has_colors() const { return ::has_colors(); }
 void screen::mvprintw(int y, int x, char const* fmt, ...) { move(y, x); BODY }
 void screen::printw(char const* fmt, ...) { BODY }
 #undef BODY
+
+bool screen::getch(int& c) {
+    int r = ::getch();
+    return ERR == r ? false : (c = r, true);
+}
 
 void screen::getnstr(char* s, int n) {
     auto r = ::getnstr(s, n);
